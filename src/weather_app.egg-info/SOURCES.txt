@@ -1,0 +1,8 @@
+setup.py
+src/weather_app.egg-info/PKG-INFO
+src/weather_app.egg-info/SOURCES.txt
+src/weather_app.egg-info/dependency_links.txt
+src/weather_app.egg-info/top_level.txt
+tests/test_analysis.py
+tests/test_data_loader.py
+tests/test_gui_interactions.py

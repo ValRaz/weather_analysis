@@ -1,0 +1,9 @@
+# Core data analysis libraries
+pandas==2.3.0
+matplotlib==3.10.3
+
+# GUI framework
+customtkinter==5.2.2
+
+# Testing framework
+pytest==8.4.1
