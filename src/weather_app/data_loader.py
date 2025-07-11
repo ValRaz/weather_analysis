@@ -19,6 +19,7 @@ def load_monthly_anomalies(
 
     if not cache_path.exists():
         df = pd.read_csv(raw_path, comment="#")
+        df = df.dropna(subset=[date_col, anomaly_col])
         df[date_col] = df[date_col].astype(str)
         df["Year"]  = df[date_col].str[:4].astype(int)
         df["Month"] = df[date_col].str[4:6].astype(int)
@@ -39,6 +40,7 @@ def load_disasters(
 
     if not cache_path.exists():
         df = pd.read_csv(raw_path, skiprows=2)
+        df = df.dropna(subset=[begin_col]) 
         df[begin_col] = pd.to_datetime(
             df[begin_col].astype(str),
             format="%Y%m%d",
