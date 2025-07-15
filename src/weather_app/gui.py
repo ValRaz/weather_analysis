@@ -54,6 +54,7 @@ def launch_app():
     fig1 = Figure(figsize=(6, 3), dpi=100)
     ax1  = fig1.add_subplot(111)
     canvas1 = FigureCanvasTkAgg(fig1, master=temp_frame)
+    canvas1.draw()
     canvas1.get_tk_widget().pack(fill="both", expand=True)
 
     # Text summary for Question 1: How have global annual surface temperature anomalies
@@ -73,6 +74,7 @@ def launch_app():
     fig2 = Figure(figsize=(6, 3), dpi=100)
     ax2  = fig2.add_subplot(111)
     canvas2 = FigureCanvasTkAgg(fig2, master=disc_frame)
+    canvas2.draw()
     canvas2.get_tk_widget().pack(fill="both", expand=True)
 
     # Updates both plots when year-range changes
