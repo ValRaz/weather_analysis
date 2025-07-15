@@ -56,6 +56,17 @@ def launch_app():
     canvas1 = FigureCanvasTkAgg(fig1, master=temp_frame)
     canvas1.get_tk_widget().pack(fill="both", expand=True)
 
+    # Text summary for Question 1: How have global annual surface temperature anomalies
+    # evolved from 1980 through the most recent year available?
+    summary_label = ctk.CTkLabel(
+        master=temp_frame,
+        text="",
+        justify="left",
+        font=("Helvetica", 20, "bold"),
+        text_color="#32CD32"
+    )
+    summary_label.pack(fill="x", pady=(5,0))
+
     # Creates the disaster count frame
     disc_frame = ctk.CTkFrame(master=app)
     disc_frame.pack(fill="both", expand=True, padx=10, pady=5)
@@ -76,6 +87,23 @@ def launch_app():
 
         rebased = annual_anom.copy()
         rebased["Annual_Anomaly_C"] = rebased["Annual_Anomaly_C"] - baseline_offset
+
+        # Computes textual summary of the anomaly trend
+        first = rebased.loc[rebased["Year"] == start, "Annual_Anomaly_C"]
+        last  = rebased.loc[rebased["Year"] == end,   "Annual_Anomaly_C"]
+        if not first.empty and not last.empty:
+            first_val = first.iloc[0]
+            last_val  = last.iloc[0]
+            avg_val   = rebased["Annual_Anomaly_C"].mean()
+            delta     = last_val - first_val
+            summary = (
+                f"From {start} to {end}, average anomaly was "
+                f"{avg_val:.2f}°C, changing by {delta:+.2f}°C "
+                f"(from {first_val:+.2f}°C to {last_val:+.2f}°C)."
+            )
+        else:
+            summary = "No data available for the selected year range."
+        summary_label.configure(text=summary)
 
         ax1.clear()
         plot_temperature_trend(ax1, rebased)
