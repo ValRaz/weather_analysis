@@ -2,11 +2,12 @@ import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-from weather_app.data_loader    import load_monthly_anomalies, load_disasters
-from weather_app.analysis       import (
+from weather_app.data_loader import load_monthly_anomalies, load_disasters
+from weather_app.analysis import (
     compute_annual_anomalies,
     compute_annual_disasters,
-    compute_baseline_offset
+    compute_baseline_offset,
+    make_summary
 )
 from weather_app.visualization  import plot_temperature_trend, plot_annual_disasters
 
@@ -57,7 +58,7 @@ def launch_app():
     canvas1.draw()
     canvas1.get_tk_widget().pack(fill="both", expand=True)
 
-    # Text summary for Question 1: How have global annual surface temperature anomalies
+    # Text summary Placeholder for Question 1: How have global annual surface temperature anomalies
     # evolved from 1980 through the most recent year available?
     summary_label = ctk.CTkLabel(
         master=temp_frame,
@@ -91,21 +92,7 @@ def launch_app():
         rebased["Annual_Anomaly_C"] = rebased["Annual_Anomaly_C"] - baseline_offset
 
         # Computes textual summary of the anomaly trend
-        first = rebased.loc[rebased["Year"] == start, "Annual_Anomaly_C"]
-        last  = rebased.loc[rebased["Year"] == end,   "Annual_Anomaly_C"]
-        if not first.empty and not last.empty:
-            first_val = first.iloc[0]
-            last_val  = last.iloc[0]
-            avg_val   = rebased["Annual_Anomaly_C"].mean()
-            delta     = last_val - first_val
-            summary = (
-                f"From {start} to {end}, average anomaly was "
-                f"{avg_val:.2f}°C, changing by {delta:+.2f}°C "
-                f"(from {first_val:+.2f}°C to {last_val:+.2f}°C)."
-            )
-        else:
-            summary = "No data available for the selected year range."
-        summary_label.configure(text=summary)
+        summary_label.configure(text=make_summary(rebased, start, end))
 
         ax1.clear()
         plot_temperature_trend(ax1, rebased)
@@ -121,5 +108,7 @@ def launch_app():
 
     # Initial draw
     update_plots()
+
+
 
     app.mainloop()
