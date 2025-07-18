@@ -40,7 +40,7 @@ def load_disasters(
 
     if not cache_path.exists():
         df = pd.read_csv(raw_path, skiprows=2)
-        df = df.dropna(subset=[begin_col]) 
+        df = df.dropna(subset=[begin_col])
         df[begin_col] = pd.to_datetime(
             df[begin_col].astype(str),
             format="%Y%m%d",

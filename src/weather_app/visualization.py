@@ -12,7 +12,6 @@ def plot_temperature_trend(ax, annual_anomalies_df):
     ax.set_ylabel("Anomaly (°C)")
     ax.legend()
 
-
 # Plots annual disaster counts on the given axes
 def plot_annual_disasters(ax, annual_disasters_df):
     ax.plot(
@@ -23,7 +22,7 @@ def plot_annual_disasters(ax, annual_disasters_df):
         label="Annual Disaster Count"
     )
 
-    # Set titles and labels
+    # Sets titles and labels
     ax.set_title("U.S. Billion-Dollar Weather Disasters Count")
     ax.set_xlabel("Year")
     ax.set_ylabel("Count")

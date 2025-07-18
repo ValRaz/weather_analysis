@@ -59,3 +59,30 @@ def make_summary(rebased_df, start_year: int, end_year: int) -> str:
         )
     else:
         return "No data available for the selected year range."
+
+# Helper to produce the summary text for Question 2
+def make_disaster_summary(
+    annual_disaster_df: pd.DataFrame,
+    start_year: int,
+    end_year: int
+) -> str:
+    df = annual_disaster_df[
+        (annual_disaster_df["Year"] >= start_year) &
+        (annual_disaster_df["Year"] <= end_year)
+    ]
+
+    first = df.loc[df["Year"] == start_year, "Disaster_Count"]
+    last  = df.loc[df["Year"] == end_year,   "Disaster_Count"]
+
+    if not first.empty and not last.empty:
+        first_val = first.iloc[0]
+        last_val  = last.iloc[0]
+        avg_val   = df["Disaster_Count"].mean()
+        delta     = last_val - first_val
+        return (
+            f"From {start_year} to {end_year}, average annual disaster count was "
+            f"{avg_val:.2f}, changing by {delta:+.0f} "
+            f"(from {first_val} to {last_val})."
+        )
+    else:
+        return "No data available for the selected year range."

@@ -7,7 +7,8 @@ from weather_app.analysis import (
     compute_annual_anomalies,
     compute_annual_disasters,
     compute_baseline_offset,
-    make_summary
+    make_summary,
+    make_disaster_summary
 )
 from weather_app.visualization  import plot_temperature_trend, plot_annual_disasters
 
@@ -28,10 +29,13 @@ def launch_app():
     # Creates the controls for year-range filtering
     control_frame = ctk.CTkFrame(master=app)
     control_frame.pack(fill="x", padx=10, pady=5)
-
-    years     = [str(y) for y in range(1980, 2025)]
+    # Pulls max years from data
+    max_anom_year     = int(anomalies_df["Year"].max())
+    max_disaster_year = int(disasters_df["Year"].max())
+    # Builds the dropdown
+    years     = [str(y) for y in range(1980, max_anom_year + 1)]
     start_var = ctk.StringVar(value="1980")
-    end_var   = ctk.StringVar(value="2024")
+    end_var   = ctk.StringVar(value=str(max_disaster_year))
 
     ctk.CTkLabel(master=control_frame, text="Start Year:").pack(side="left", padx=(0,5))
     start_menu = ctk.CTkOptionMenu(
@@ -78,29 +82,36 @@ def launch_app():
     canvas2.draw()
     canvas2.get_tk_widget().pack(fill="both", expand=True)
 
+    # Text summary Placeholder for Question 2: Annual disaster count trend
+    dis_summary_label = ctk.CTkLabel(
+        master=disc_frame,
+        text="",
+        justify="left",
+        font=("Helvetica", 20, "bold"),
+        text_color="#32CD32"
+    )
+    dis_summary_label.pack(fill="x", pady=(5, 0))
+
     # Updates both plots when year-range changes
     def update_plots(_=None):
         start = int(start_var.get())
         end   = int(end_var.get())
 
-        annual_anom     = compute_annual_anomalies(anomalies_df, start, end)
+        # Computes the series plots for questions 1 and 2
+        annual_anom = compute_annual_anomalies(anomalies_df, start, end)
         annual_disaster = compute_annual_disasters(disasters_df, start, end)
-
         baseline_offset = compute_baseline_offset(annual_anom, 1981, 2010)
 
+        # Rebases and redraws the plots and summaries for questions 1 and 2
         rebased = annual_anom.copy()
-        rebased["Annual_Anomaly_C"] = rebased["Annual_Anomaly_C"] - baseline_offset
-
-        # Computes textual summary of the anomaly trend
+        rebased["Annual_Anomaly_C"] -= baseline_offset
         summary_label.configure(text=make_summary(rebased, start, end))
+        ax1.clear(); plot_temperature_trend(ax1, rebased); canvas1.draw()
 
-        ax1.clear()
-        plot_temperature_trend(ax1, rebased)
-        canvas1.draw()
-
-        ax2.clear()
-        plot_annual_disasters(ax2, annual_disaster)
-        canvas2.draw()
+        dis_summary_label.configure(
+            text=make_disaster_summary(annual_disaster, start, end)
+        )
+        ax2.clear(); plot_annual_disasters(ax2, annual_disaster); canvas2.draw()
 
     # Binds dropdowns to trigger plot updates
     start_menu.configure(command=update_plots)
