@@ -1,12 +1,10 @@
 # Overview
 
-This project explores long-ter climate trends by analyzing two freely available datasets. The following are the datasets I used from github datasets (from datahub.io), and NOAA:
+This project explores long-term climate trends by analyzing two freely available datasets. The following are the datasets I used from github datasets (from datahub.io), and NOAA:
 * [CPI Adjusted United States Billion Dollar Disaster Events](https://www.ncei.noaa.gov/access/billions/time-series/US/cost)
 * [Global Average Surface Temperatures Monthly, and Global Land and Ocean Average Temperature Anomalies](https://github.com/datasets/global-temp)
 
 I built a small desktop application in Python to load, clean and visualize the data, answer two key questions about climate change, and deepen my experience with data-driven GUI development.
-
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the data set, the questions and answers, the code running and a walkthrough of the code.}
 
 [Software Demo Video](http://youtube.link.goes.here)
 
