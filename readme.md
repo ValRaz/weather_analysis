@@ -29,7 +29,6 @@ Key libraries used:
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
 * [Pandas Documentation](https://pandas.pydata.org/docs/)
 * [Matplotlib Tutorial](https://matplotlib.org/stable/tutorials/index.html)
 * [CustomTkinter Guide](https://github.com/TomSchimansky/CustomTkinter)
